@@ -1,0 +1,186 @@
+.map-section { background: var(--bg-light); }
+
+.map-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  align-items: start;
+
+  @media (max-width: 1024px) { grid-template-columns: 1fr; }
+}
+
+.map-bg {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: visible;
+  background: linear-gradient(135deg, #e8f4f0 0%, #d4eee3 100%);
+  min-height: 460px;
+  box-shadow: var(--shadow-md);
+}
+
+.world-map-img {
+  width: 100%;
+  height: 460px;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  display: block;
+  opacity: 0.55;
+  filter: sepia(20%) hue-rotate(100deg);
+}
+
+/* Region Markers */
+.region-marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  z-index: 10;
+
+  &:hover .marker-pin, &.active .marker-pin {
+    transform: scale(1.4) translateY(-4px);
+  }
+
+  &:hover .marker-label, &.active .marker-label { opacity: 1; }
+}
+
+.marker-pin {
+  width: 36px; height: 36px;
+  border-radius: 50% 50% 50% 0;
+  background: var(--primary);
+  transform: rotate(-45deg);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: var(--transition);
+  animation: markerBounce 2.5s ease-in-out infinite;
+
+  .marker-flag {
+    transform: rotate(45deg);
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+@keyframes markerBounce {
+  0%, 100% { transform: rotate(-45deg) translateY(0); }
+  50% { transform: rotate(-45deg) translateY(-5px); }
+}
+
+.region-marker.active .marker-pin {
+  background: var(--accent);
+  animation: none;
+}
+
+.marker-label {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+/* Popup */
+.marker-popup {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  min-width: 220px;
+  z-index: 30;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.06);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-bottom: none;
+    border-top-color: #fff;
+  }
+}
+
+.popup-img {
+  width: 100%; height: 110px;
+  object-fit: cover;
+}
+
+.popup-body {
+  padding: 0.85rem;
+
+  h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 0.3rem; }
+  p { font-size: 0.75rem; color: var(--text-mid); margin-bottom: 0.6rem; line-height: 1.5; }
+}
+
+.popup-meta {
+  display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;
+}
+
+.popup-price, .popup-tours {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.75rem; font-weight: 600; color: var(--text-dark);
+  i { color: var(--primary); font-size: 0.7rem; }
+}
+
+/* Sidebar */
+.map-sidebar {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  max-height: 500px;
+  overflow-y: auto;
+
+  h3 {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--bg-light);
+    display: flex; align-items: center; gap: 0.5rem;
+    i { color: var(--primary); }
+  }
+}
+
+.map-dest-list { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.map-dest-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover, &.active {
+    background: rgba(26,107,60,0.08);
+    .dest-info strong { color: var(--primary); }
+  }
+
+  .dest-thumb {
+    width: 44px; height: 36px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .dest-info {
+    flex: 1;
+    strong { display: block; font-size: 0.85rem; color: var(--text-dark); transition: color 0.3s; }
+    span { font-size: 0.72rem; color: var(--text-light); }
+  }
+
+  > i { font-size: 0.7rem; color: var(--text-light); }
+}

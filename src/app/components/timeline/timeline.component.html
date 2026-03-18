@@ -1,0 +1,38 @@
+<section class="timeline-section" id="timeline">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag"><i class="fas fa-route"></i> How It Works</span>
+      <h2>Book Your Tour in 6 Easy Steps</h2>
+      <p>From choosing your destination to enjoying your holiday — we make it seamless</p>
+    </div>
+
+    <div class="timeline">
+      <!-- Vertical Line -->
+      <div class="timeline-line">
+        <div class="timeline-line-fill"></div>
+      </div>
+
+      <div class="timeline-step" *ngFor="let step of timelineSteps; let i = index"
+           [class.right]="i % 2 !== 0">
+        <div class="step-content">
+          <div class="step-icon">
+            <i [class]="step.icon"></i>
+          </div>
+          <div class="step-body">
+            <span class="step-day">{{ step.day }}</span>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.desc }}</p>
+          </div>
+        </div>
+        <div class="step-dot"></div>
+      </div>
+    </div>
+
+    <div class="timeline-cta">
+      <p>Every tour is fully customized to your preferences and budget.</p>
+      <button class="btn btn-primary" (click)="goTo('booking')">
+        <i class="fas fa-calendar-check"></i> Plan My Custom Tour
+      </button>
+    </div>
+  </div>
+</section>

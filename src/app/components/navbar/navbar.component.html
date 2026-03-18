@@ -1,0 +1,87 @@
+<nav class="navbar" [class.scrolled]="scrolled">
+  <div class="container nav-container">
+
+    <!-- Logo -->
+    <a class="nav-logo" (click)="scrollTo('home')" style="cursor:pointer">
+      <img src="https://cdn.yourholiday.me/static/dynimg/partner/37/300x150/3562268-3562267_j-k-new-logo.jpg"
+           alt="J K Tours And Travels, Pune" class="logo-img">
+    </a>
+
+    <!-- Desktop Nav -->
+    <ul class="nav-links">
+      <li class="nav-item" (mouseenter)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='destinations'" (click)="scrollTo('destinations')">
+          Destinations
+        </a>
+      </li>
+      <li class="nav-item" (mouseenter)="openMega('experiences')" (mouseleave)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='categories'">
+          Experiences <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="mega-menu" *ngIf="activeMenu==='experiences'">
+          <div class="mega-grid">
+            <a class="mega-item" *ngFor="let item of data.megaExperiences" (click)="scrollTo('categories'); closeMega()">
+              <div class="mega-img">
+                <img [src]="item.image" [alt]="item.label" loading="lazy">
+              </div>
+              <span>{{ item.label }}</span>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" (mouseenter)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='packages'" (click)="scrollTo('packages')">
+          Fixed Departures
+        </a>
+      </li>
+      <li class="nav-item" (mouseenter)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='about'" (click)="scrollTo('about')">
+          About Us
+        </a>
+      </li>
+      <li class="nav-item" (mouseenter)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='contact'" (click)="scrollTo('contact')">
+          Contact Us
+        </a>
+      </li>
+    </ul>
+
+    <!-- Right Actions -->
+    <div class="nav-actions">
+      <button class="nav-icon-btn" (click)="toggleSearch()" title="Search">
+        <i class="fas fa-search"></i>
+      </button>
+
+      <div class="search-dropdown" *ngIf="searchOpen" (click)="$event.stopPropagation()">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search destinations, packages..." autofocus>
+        <button class="btn btn-primary btn-sm" (click)="scrollTo('destinations'); searchOpen=false">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <a class="btn btn-accent btn-sm" (click)="scrollTo('contact')" style="cursor:pointer">
+        Contact Us
+      </a>
+
+      <button class="hamburger" [class.open]="mobileOpen" (click)="toggleMobile()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="mobileOpen">
+    <ul>
+      <li class="mobile-nav-item"><a (click)="scrollTo('destinations')">Destinations</a></li>
+      <li class="mobile-nav-item"><a (click)="scrollTo('categories')">Experiences</a></li>
+      <li class="mobile-nav-item"><a (click)="scrollTo('packages')">Fixed Departures</a></li>
+      <li class="mobile-nav-item"><a (click)="scrollTo('about')">About Us</a></li>
+      <li class="mobile-nav-item"><a (click)="scrollTo('contact')">Contact Us</a></li>
+      <li class="mobile-nav-item mobile-cta">
+        <a class="btn btn-accent" (click)="scrollTo('booking')">Book Now</a>
+      </li>
+    </ul>
+  </div>
+</nav>
