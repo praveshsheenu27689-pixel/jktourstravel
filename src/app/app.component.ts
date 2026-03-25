@@ -51,6 +51,7 @@ import { ScrollService } from './core/services/scroll.service';
 })
 export class AppComponent implements OnInit {
   loading = true;
+  selectedPackage = '';
 
   constructor(private scrollSvc: ScrollService) {}
 
@@ -65,5 +66,10 @@ export class AppComponent implements OnInit {
 
   scrollTo(id: string) {
     this.scrollSvc.scrollTo(id);
+  }
+
+  onBookPackage(pkgName: string) {
+    this.selectedPackage = pkgName;
+    setTimeout(() => this.scrollSvc.scrollTo('booking'), 50);
   }
 }

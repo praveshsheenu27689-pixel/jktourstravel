@@ -40,10 +40,10 @@
 
         <div class="booking-contact">
           <p>Prefer to talk? Call us directly:</p>
-          <a href="tel:+919822001234" class="booking-phone">
-            <i class="fas fa-phone"></i> +91 98220 01234
+          <a href="tel:+919422421993" class="booking-phone">
+            <i class="fas fa-phone"></i> +91 94224 21993
           </a>
-          <a href="https://wa.me/919822001234" class="booking-whatsapp" target="_blank">
+          <a href="https://wa.me/919422421993" class="booking-whatsapp" target="_blank">
             <i class="fab fa-whatsapp"></i> WhatsApp Us
           </a>
         </div>
@@ -59,6 +59,15 @@
         </div>
 
         <form *ngIf="!submitted" (ngSubmit)="submit()" #bookingForm="ngForm">
+          <div class="form-group" *ngIf="form.packageName">
+            <label>Selected Package</label>
+            <div class="input-wrap">
+              <i class="fas fa-suitcase"></i>
+              <input type="text" [(ngModel)]="form.packageName" name="packageName" readonly
+                     style="background:#f0f4ff; color:var(--primary); font-weight:600;">
+            </div>
+          </div>
+
           <div class="form-row">
             <div class="form-group">
               <label>Full Name *</label>
@@ -162,3 +171,4 @@
     </div>
   </div>
 </section>
+

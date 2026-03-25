@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService, Package } from '../../core/services/data.service';
 import { ScrollService } from '../../core/services/scroll.service';
@@ -15,14 +15,16 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrls: ['./packages.component.scss']
 })
 export class PackagesComponent implements AfterViewInit {
-  activeTab = 'domestic';
+  activeTab = 'bali';
   selectedPkg: Package | null = null;
 
+  @Output() bookPackage = new EventEmitter<string>();
+
   tabs = [
-    { key: 'domestic',      label: 'Domestic',                icon: 'fas fa-flag' },
-    { key: 'international', label: 'International',           icon: 'fas fa-globe' },
-    { key: 'europe',        label: 'Europe Fixed Departures', icon: 'fas fa-plane' },
-    { key: 'andaman',       label: 'Andaman Fixed Departures',icon: 'fas fa-water' }
+    { key: 'bali',      label: 'Bali',      icon: 'fas fa-umbrella-beach' },
+    { key: 'dubai',     label: 'Dubai',     icon: 'fas fa-city' },
+    { key: 'thailand',  label: 'Thailand',  icon: 'fas fa-elephant' },
+    { key: 'singapore', label: 'Singapore', icon: 'fas fa-building' }
   ];
 
   inclusions = [
@@ -40,10 +42,10 @@ export class PackagesComponent implements AfterViewInit {
 
   get currentPackages(): Package[] {
     switch (this.activeTab) {
-      case 'europe':        return this.data.europePackages;
-      case 'andaman':       return this.data.andamanPackages;
-      case 'international': return this.data.internationalPackages;
-      default:              return this.data.domesticPackages;
+      case 'dubai':     return this.data.dubaiPackages;
+      case 'thailand':  return this.data.thailandPackages;
+      case 'singapore': return this.data.singaporePackages;
+      default:          return this.data.baliPackages;
     }
   }
 
@@ -94,48 +96,71 @@ export class PackagesComponent implements AfterViewInit {
   }
 
   bookNow() {
+    const name = this.selectedPkg?.title || '';
     this.closeDetail();
-    setTimeout(() => this.scrollSvc.scrollTo('booking'), 350);
+    setTimeout(() => {
+      this.bookPackage.emit(name);
+    }, 350);
   }
 
   getHighlights(pkg: Package): string[] {
     const map: Record<string, string[]> = {
-      'Domestic': [
-        'Comfortable AC coach transfers throughout',
-        'Handpicked 3★/4★ hotels with breakfast',
-        'Expert local guide at every destination',
-        'All entry tickets & sightseeing included',
-        'Flexible itinerary — customizable on request'
+      'Dubai': [
+        'Return international flights from Mumbai/Delhi',
+        'Visa on arrival / visa assistance included',
+        'Premium hotel stays with daily breakfast',
+        'All transfers, city tours & desert safari included',
+        'Dhow cruise, Burj Khalifa & top attractions covered'
       ],
-      'International': [
+      'Bali': [
+        'Return international flights from Mumbai/Delhi',
+        'Visa on arrival assistance included',
+        'Premium hotel stays with daily breakfast',
+        'All transfers & guided sightseeing included',
+        'Water sports, temple visits & cultural shows'
+      ],
+      'Thailand': [
+        'Return international flights from Mumbai/Delhi',
+        'Visa on arrival assistance included',
+        'Premium hotel stays with daily breakfast',
+        'All transfers & guided sightseeing included',
+        'Temples, islands, elephant sanctuary & night markets'
+      ],
+      'Singapore': [
         'Return international flights from Mumbai/Delhi',
         'Visa assistance & documentation support',
         'Premium hotel stays with daily breakfast',
-        'Airport transfers & city tours included',
-        'Dedicated tour manager throughout the trip'
-      ],
-      'Europe': [
-        'Return flights from India included',
-        'All meals as per itinerary (breakfast + dinner)',
-        'Luxury coach travel across Europe',
-        'Guided city tours with expert commentary',
-        'All entry fees to monuments & attractions'
-      ],
-      'Andaman': [
-        'Return flights from major Indian cities',
-        'Ferry transfers between islands',
-        'Scuba diving & water sports activities',
-        'Beachside resort accommodation',
-        'All meals included (breakfast + dinner)'
+        'All transfers & guided city tours included',
+        'Universal Studios, Gardens by the Bay & top attractions'
       ]
     };
-    return map[pkg.category] || map['Domestic'];
+    return map[pkg.category] || map['Bali'];
   }
 
   getItinerary(pkg: Package): { title: string; desc: string }[] {
     const nights = this.getDurationNights(pkg);
     const days = [];
     const stops = pkg.itinerary.split(',').map(s => s.trim().replace(/\d+N$/, '').trim());
+
+    const attractionBased = ['Bali', 'Dubai', 'Thailand', 'Singapore'];
+    if (attractionBased.includes(pkg.category)) {
+      const airports: Record<string, string> = {
+        'Dubai': 'Dubai International Airport',
+        'Thailand': 'Suvarnabhumi Airport, Bangkok',
+        'Singapore': 'Changi Airport, Singapore',
+        'Bali': 'Ngurah Rai Airport'
+      };
+      const cityName = airports[pkg.category];
+      const perDay = Math.ceil(stops.length / (nights + 1));
+      for (let i = 0; i < nights + 1; i++) {
+        const dayAttractions = stops.slice(i * perDay, (i + 1) * perDay).join(', ');
+        if (i === 0) days.push({ title: `Arrival – ${pkg.category}`, desc: `Arrive at ${cityName}, check-in to hotel. Evening at leisure. Welcome dinner.` });
+        else if (i === nights) days.push({ title: `Departure – ${pkg.category}`, desc: `Breakfast at hotel. Check-out and transfer to airport. Tour ends with beautiful memories.` });
+        else days.push({ title: `Day ${i + 1} – ${dayAttractions || stops[0]}`, desc: `Visit ${dayAttractions}. Expert guide accompanies throughout. Meals included.` });
+      }
+      return days;
+    }
+
     for (let i = 0; i < Math.min(nights + 1, 6); i++) {
       const place = stops[i] || stops[stops.length - 1];
       if (i === 0) days.push({ title: `Arrival – ${place}`, desc: `Arrive at ${place}, check-in to hotel. Evening free for leisure. Welcome dinner.` });
@@ -151,13 +176,22 @@ export class PackagesComponent implements AfterViewInit {
   }
 
   private getDurationNights(pkg: Package): number {
+    // Try to extract from itinerary (e.g. "Ubud 2N, Kuta 3N")
     const stops = pkg.itinerary.split(',');
     let total = 0;
     stops.forEach(s => {
       const m = s.match(/(\d+)N/);
       if (m) total += parseInt(m[1]);
     });
-    return total || 4;
+    if (total) return total;
+    // For Bali packages, infer from title
+    const titleMatch = pkg.title.match(/(\d+)N/);
+    if (titleMatch) return parseInt(titleMatch[1]);
+    if (pkg.category === 'Bali') return 5;
+    if (pkg.category === 'Dubai') return 4;
+    if (pkg.category === 'Thailand') return 6;
+    if (pkg.category === 'Singapore') return 5;
+    return 4;
   }
 
   goTo(id: string) { this.scrollSvc.scrollTo(id); }

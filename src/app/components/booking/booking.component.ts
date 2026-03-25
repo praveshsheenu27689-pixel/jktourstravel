@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import gsap from 'gsap';
@@ -13,21 +13,32 @@ gsap.registerPlugin(ScrollTrigger);
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
-export class BookingComponent {
+export class BookingComponent implements OnChanges {
+  @Input() prefilledPackage = '';
+
   submitted = false;
   form = {
     name: '', email: '', phone: '',
     destination: '', date: '', travelers: '2',
-    budget: '', message: ''
+    budget: '', message: '', packageName: ''
   };
+
+  ngOnChanges() {
+    if (this.prefilledPackage) {
+      this.form.packageName = this.prefilledPackage;
+      this.form.destination = this.prefilledPackage;
+    }
+  }
 
   submit() {
     this.submitted = true;
-    gsap.from('.success-msg', { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' });
+    setTimeout(() => {
+      gsap.fromTo('.success-msg', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' });
+    }, 10);
   }
 
   reset() {
     this.submitted = false;
-    this.form = { name: '', email: '', phone: '', destination: '', date: '', travelers: '2', budget: '', message: '' };
+    this.form = { name: '', email: '', phone: '', destination: '', date: '', travelers: '2', budget: '', message: '', packageName: '' };
   }
 }

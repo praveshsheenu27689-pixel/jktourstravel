@@ -173,7 +173,7 @@
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
-      box-shadow: 0 4px 12px rgba(26,107,60,0.3);
+      box-shadow: 0 4px 12px rgba(30,58,95,0.3);
     }
   }
 }
@@ -216,7 +216,7 @@
     &:focus {
       border-color: var(--primary);
       background: #fff;
-      box-shadow: 0 0 0 3px rgba(26,107,60,0.1);
+      box-shadow: 0 0 0 3px rgba(30,58,95,0.1);
     }
   }
 }
@@ -244,7 +244,7 @@
   a {
     font-size: 0.78rem;
     color: var(--primary);
-    background: rgba(26,107,60,0.08);
+    background: rgba(30,58,95,0.08);
     padding: 0.2rem 0.7rem;
     border-radius: 50px;
     transition: var(--transition);

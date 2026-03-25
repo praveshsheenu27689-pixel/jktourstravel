@@ -165,7 +165,7 @@
   transition: var(--transition);
 
   &:hover, &.active {
-    background: rgba(26,107,60,0.08);
+    background: rgba(30,58,95,0.08);
     .dest-info strong { color: var(--primary); }
   }
 

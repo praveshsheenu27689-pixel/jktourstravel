@@ -1,22 +1,23 @@
 /* ============================================================
-   JK TOURS AND TRAVELS — PREMIUM DESIGN SYSTEM
+   JK TOURS AND TRAVELS — PREMIUM DESIGN SYSTEM v2
+   Primary: Dark Blue #1E3A5F | Accent: Orange #FF7A00
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  --primary:       #1a6b3c;
-  --primary-dark:  #0f4a28;
-  --primary-light: #2d9e5f;
-  --primary-glow:  rgba(26,107,60,0.15);
-  --accent:        #f5a623;
-  --accent-dark:   #d4891a;
-  --accent-light:  rgba(245,166,35,0.15);
+  --primary:       #1E3A5F;
+  --primary-dark:  #142847;
+  --primary-light: #2a5298;
+  --primary-glow:  rgba(30,58,95,0.12);
+  --accent:        #FF7A00;
+  --accent-dark:   #e06a00;
+  --accent-light:  rgba(255,122,0,0.12);
   --text-dark:     #111827;
   --text-mid:      #4b5563;
   --text-light:    #9ca3af;
   --bg-white:      #ffffff;
-  --bg-light:      #f8fafc;
+  --bg-light:      #F5F7FA;
   --bg-card:       #ffffff;
   --border:        #e5e7eb;
   --shadow-xs:     0 1px 3px rgba(0,0,0,0.06);
@@ -83,7 +84,7 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
     padding: 0.45rem 1.1rem;
     border-radius: 50px;
     margin-bottom: 1rem;
-    border: 1px solid rgba(26,107,60,0.2);
+    border: 1px solid rgba(30,58,95,0.2);
   }
 
   h2 {
@@ -139,16 +140,16 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   &-primary {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
     color: #fff;
-    box-shadow: 0 4px 20px rgba(26,107,60,0.35);
-    &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,107,60,0.45); }
+    box-shadow: 0 4px 20px rgba(30,58,95,0.35);
+    &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,58,95,0.45); }
     &:active { transform: translateY(0); }
   }
 
   &-accent {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
     color: #fff;
-    box-shadow: 0 4px 20px rgba(245,166,35,0.35);
-    &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,166,35,0.45); }
+    box-shadow: 0 4px 20px rgba(255,122,0,0.35);
+    &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,122,0,0.45); }
   }
 
   &-outline {
@@ -263,16 +264,25 @@ section { padding: 5rem 0; }
   background-clip: text;
 }
 
-/* ===== PULSE ANIMATION ===== */
+/* ===== ANIMATIONS ===== */
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
 }
 
-/* ===== SHIMMER ===== */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .skeleton {

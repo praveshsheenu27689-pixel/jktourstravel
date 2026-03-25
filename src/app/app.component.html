@@ -7,7 +7,7 @@
   <main>
     <app-hero></app-hero>
     <app-destinations></app-destinations>
-    <app-packages></app-packages>
+    <app-packages (bookPackage)="onBookPackage($event)"></app-packages>
     <app-deals></app-deals>
     <app-categories></app-categories>
     <app-scroll-story></app-scroll-story>
@@ -15,7 +15,7 @@
     <app-timeline></app-timeline>
     <app-gallery></app-gallery>
     <app-testimonials></app-testimonials>
-    <app-booking></app-booking>
+    <app-booking [prefilledPackage]="selectedPackage"></app-booking>
     <app-about></app-about>
     <app-newsletter></app-newsletter>
     <app-contact></app-contact>
@@ -26,7 +26,7 @@
 
   <!-- Floating CTA -->
   <div class="floating-cta">
-    <a href="https://wa.me/919822001234" target="_blank" class="whatsapp" title="WhatsApp">
+    <a href="https://wa.me/919422421993" target="_blank" class="whatsapp" title="WhatsApp">
       <i class="fab fa-whatsapp"></i>
     </a>
     <button class="call" title="Call Us" (click)="scrollTo('contact')">
@@ -37,3 +37,4 @@
     </button>
   </div>
 </div>
+
