@@ -4,20 +4,41 @@
     <!-- Logo -->
     <a class="nav-logo" (click)="scrollTo('home')" style="cursor:pointer">
       <img src="https://cdn.yourholiday.me/static/dynimg/partner/37/300x150/3562268-3562267_j-k-new-logo.jpg"
-           alt="J K Tours And Travels, Pune" class="logo-img">
+           alt="J K Tours And Travels, Pune" class="logo-img"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+           loading="eager">
+      <span class="logo-text-fallback" style="display:none">JK Tours</span>
     </a>
 
     <!-- Desktop Nav -->
     <ul class="nav-links">
-      <li class="nav-item" (mouseenter)="closeMega()">
-        <a class="nav-link" [class.active]="activeSection==='destinations'" (click)="scrollTo('destinations')">
-          Domestic
+      <li class="nav-item" (mouseenter)="openMega('domestic')" (mouseleave)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='destinations'">
+          Domestic <i class="fas fa-chevron-down"></i>
         </a>
+        <div class="mega-menu mega-menu--dest" *ngIf="activeMenu==='domestic'" (mouseenter)="openMega('domestic')" (mouseleave)="closeMega()">
+          <div class="mega-menu-header"><i class="fas fa-flag"></i> Within India</div>
+          <div class="mega-grid mega-grid--dest">
+            <a class="mega-item" *ngFor="let d of domesticDestinations" (click)="scrollTo('destinations'); closeMega()">
+              <div class="mega-img"><img [src]="d.image" [alt]="d.name" loading="lazy"></div>
+              <span>{{ d.name }}</span>
+            </a>
+          </div>
+        </div>
       </li>
-      <li class="nav-item" (mouseenter)="closeMega()">
-        <a class="nav-link" [class.active]="activeSection==='packages'" (click)="scrollTo('packages')">
-          International
+      <li class="nav-item" (mouseenter)="openMega('international')" (mouseleave)="closeMega()">
+        <a class="nav-link" [class.active]="activeSection==='packages'">
+          International <i class="fas fa-chevron-down"></i>
         </a>
+        <div class="mega-menu mega-menu--dest" *ngIf="activeMenu==='international'" (mouseenter)="openMega('international')" (mouseleave)="closeMega()">
+          <div class="mega-menu-header"><i class="fas fa-globe"></i> Outside India</div>
+          <div class="mega-grid mega-grid--dest">
+            <a class="mega-item" *ngFor="let d of internationalDestinations" (click)="scrollTo('packages'); closeMega()">
+              <div class="mega-img"><img [src]="d.image" [alt]="d.name" loading="lazy"></div>
+              <span>{{ d.name }}</span>
+            </a>
+          </div>
+        </div>
       </li>
       <li class="nav-item" (mouseenter)="openMega('experiences')" (mouseleave)="closeMega()">
         <a class="nav-link" [class.active]="activeSection==='categories'">

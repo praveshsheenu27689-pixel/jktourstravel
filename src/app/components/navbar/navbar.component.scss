@@ -91,6 +91,20 @@
 
 .nav-item:hover .nav-link i { transform: rotate(180deg); }
 
+.mega-menu-header {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--primary); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  i { color: var(--accent); }
+}
+
+.mega-menu--dest { min-width: 700px; }
+
+.mega-grid--dest {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 /* Mega Menu */
 .mega-menu {
   position: absolute;

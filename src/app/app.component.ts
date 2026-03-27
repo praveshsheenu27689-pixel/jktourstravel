@@ -52,11 +52,12 @@ import { ScrollService } from './core/services/scroll.service';
 export class AppComponent implements OnInit {
   loading = true;
   selectedPackage = '';
+  activeDestTab = '';
 
   constructor(private scrollSvc: ScrollService) {}
 
   ngOnInit() {
-    setTimeout(() => this.loading = false, 2800);
+    setTimeout(() => this.loading = false, 3300);
   }
 
   scrollTop(e: Event) {
@@ -71,5 +72,10 @@ export class AppComponent implements OnInit {
   onBookPackage(pkgName: string) {
     this.selectedPackage = pkgName;
     setTimeout(() => this.scrollSvc.scrollTo('booking'), 50);
+  }
+
+  onOpenDestTab(destName: string) {
+    this.activeDestTab = destName;
+    setTimeout(() => this.scrollSvc.scrollTo('packages'), 50);
   }
 }

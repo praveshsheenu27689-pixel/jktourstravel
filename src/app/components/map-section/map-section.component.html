@@ -21,6 +21,7 @@
              (click)="selectRegion(r)">
           <div class="marker-pin">
             <span class="marker-flag">{{ r.flag }}</span>
+            <div class="marker-tip"></div>
           </div>
           <div class="marker-label">{{ r.name }}</div>
 
@@ -52,7 +53,10 @@
                (click)="selectRegion(r)">
             <img [src]="r.image" [alt]="r.name" class="dest-thumb">
             <div class="dest-info">
-              <strong>{{ r.flag }} {{ r.name }}</strong>
+              <div class="dest-flag-name">
+                <span class="dest-flag-badge">{{ r.flag }}</span>
+                <strong>{{ r.name }}</strong>
+              </div>
               <span>{{ r.tours }} tours · {{ r.price }}</span>
             </div>
             <i class="fas fa-chevron-right"></i>
