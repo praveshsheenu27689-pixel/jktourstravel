@@ -4,10 +4,10 @@
   <app-topbar></app-topbar>
   <app-navbar></app-navbar>
 
-  <main>
+  <!-- Home page sections -->
+  <main *ngIf="isHomePage">
     <app-hero></app-hero>
-    <app-destinations (openDestTab)="onOpenDestTab($event)"></app-destinations>
-    <app-packages (bookPackage)="onBookPackage($event)" [activeDestTab]="activeDestTab"></app-packages>
+    <app-destinations></app-destinations>
     <app-deals></app-deals>
     <app-categories></app-categories>
     <app-scroll-story></app-scroll-story>
@@ -21,10 +21,12 @@
     <app-contact></app-contact>
   </main>
 
+  <!-- Sub-pages (destination, category) -->
+  <router-outlet *ngIf="!isHomePage"></router-outlet>
+
   <app-footer></app-footer>
   <app-sticky-bar></app-sticky-bar>
 
-  <!-- Floating CTA -->
   <div class="floating-cta">
     <a href="https://wa.me/919422421993" target="_blank" class="whatsapp" title="WhatsApp" rel="noopener noreferrer">
       <i class="fab fa-whatsapp"></i>
@@ -37,4 +39,3 @@
     </button>
   </div>
 </div>
-

@@ -10,10 +10,38 @@ import gsap from 'gsap';
     <div class="loader">
       <!-- Flying plane -->
       <div class="loader-plane">
-        <svg class="plane-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 40 L70 10 L60 40 L70 70 Z" fill="white" opacity="0.95"/>
-          <path d="M30 40 L60 40 L55 52 Z" fill="rgba(245,166,35,0.9)"/>
-          <path d="M25 40 L10 48 L28 44 Z" fill="rgba(255,255,255,0.6)"/>
+        <svg class="plane-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Main fuselage -->
+          <ellipse cx="60" cy="60" rx="48" ry="12" fill="white" opacity="0.97"/>
+          <!-- Nose cone -->
+          <path d="M108 60 Q120 60 108 54 L96 60 L108 66 Q120 60 108 60Z" fill="white"/>
+          <!-- Tail fin vertical -->
+          <path d="M18 60 L12 38 L28 52 Z" fill="rgba(255,255,255,0.9)"/>
+          <!-- Tail fin horizontal left -->
+          <path d="M22 60 L8 68 L26 64 Z" fill="rgba(255,255,255,0.85)"/>
+          <!-- Tail fin horizontal right -->
+          <path d="M22 60 L8 52 L26 56 Z" fill="rgba(255,255,255,0.85)"/>
+          <!-- Main wing left (upper) -->
+          <path d="M72 58 L40 20 L52 56 Z" fill="rgba(255,255,255,0.95)"/>
+          <!-- Main wing right (lower) -->
+          <path d="M72 62 L40 100 L52 64 Z" fill="rgba(255,255,255,0.95)"/>
+          <!-- Wing accent stripe -->
+          <path d="M72 58 L52 56 L52 64 L72 62 Z" fill="rgba(245,166,35,0.85)"/>
+          <!-- Engine left -->
+          <ellipse cx="62" cy="50" rx="10" ry="4" fill="rgba(200,220,255,0.7)"/>
+          <!-- Engine right -->
+          <ellipse cx="62" cy="70" rx="10" ry="4" fill="rgba(200,220,255,0.7)"/>
+          <!-- Windows row -->
+          <circle cx="90" cy="57" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="82" cy="57" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="74" cy="57" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="66" cy="57" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="90" cy="63" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="82" cy="63" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="74" cy="63" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <circle cx="66" cy="63" r="2.5" fill="rgba(173,216,255,0.9)"/>
+          <!-- Fuselage stripe -->
+          <rect x="28" y="58" width="80" height="4" rx="2" fill="rgba(245,166,35,0.6)"/>
         </svg>
       </div>
       <!-- Trail dots -->
@@ -58,11 +86,11 @@ import gsap from 'gsap';
     /* Plane */
     .loader-plane {
       position: absolute;
-      bottom: 15%; left: -160px;
+      bottom: 12%; left: -220px;
       z-index: 3;
-      filter: drop-shadow(0 0 24px rgba(245,166,35,0.9)) drop-shadow(0 0 60px rgba(255,255,255,0.4));
+      filter: drop-shadow(0 0 32px rgba(245,166,35,0.95)) drop-shadow(0 0 80px rgba(255,255,255,0.5));
     }
-    .plane-svg { width: 120px; height: 120px; }
+    .plane-svg { width: 200px; height: 200px; }
     /* Trail dots */
     .trail {
       position: absolute;

@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
 import { ScrollService } from '../../core/services/scroll.service';
 import gsap from 'gsap';
@@ -37,10 +38,12 @@ const SUB_PACKAGES: Record<string, SubPkg[]> = {
   'Vietnam':     [ {name:'Hanoi Highlights',nights:4,duration:'4N/5D'},{name:'Ha Long Escape',nights:5,duration:'5N/6D'},{name:'Vietnam Explorer',nights:6,duration:'6N/7D'},{name:'Grand Vietnam',nights:7,duration:'7N/8D'} ]
 };
 
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-destinations',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './destinations.component.html',
   styleUrls: ['./destinations.component.scss']
 })
@@ -51,7 +54,7 @@ export class DestinationsComponent implements AfterViewInit {
 
   @Output() openDestTab = new EventEmitter<string>();
 
-  constructor(public data: DataService, private scrollSvc: ScrollService) {}
+  constructor(public data: DataService, private scrollSvc: ScrollService, private router: Router) {}
 
   get visibleDestinations() {
     return this.showAll ? this.data.destinations : this.data.destinations.slice(0, 12);
@@ -71,9 +74,17 @@ export class DestinationsComponent implements AfterViewInit {
   }
 
   openDest(dest: { name: string; image: string }) {
-    // Emit to parent to switch packages tab, then scroll
-    this.openDestTab.emit(dest.name);
-    this.scrollSvc.scrollTo('packages');
+    const domesticKeys = ['andamans', 'goa', 'kerala', 'himachal pradesh', 'rajasthan', 'ladakh', 'uttarakhand', 'kashmir'];
+    const routedIntlKeys = ['bali', 'dubai', 'thailand', 'singapore', 'europe', 'maldives', 'malaysia', 'switzerland', 'australia', 'japan', 'turkey', 'vietnam', 'cambodia', 'georgia', 'greece', 'italy', 'kazakhstan', 'new zealand', 'spain', 'russia', 'seychelles', 'mauritius', 'portugal', 'sri lanka'];
+    const key = dest.name.toLowerCase();
+    if (domesticKeys.includes(key)) {
+      this.router.navigate(['/destination', key.replace(/\s+/g, '-')]);
+    } else if (routedIntlKeys.includes(key)) {
+      this.router.navigate(['/destination', key]);
+    } else {
+      this.openDestTab.emit(dest.name);
+      this.scrollSvc.scrollTo('packages');
+    }
   }
 
   goTo(id: string) { this.scrollSvc.scrollTo(id); }

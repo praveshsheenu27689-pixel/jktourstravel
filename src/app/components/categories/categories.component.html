@@ -9,7 +9,7 @@
     <div class="cat-grid">
       <div class="cat-card"
            *ngFor="let exp of data.experiences"
-           (click)="goTo('packages')">
+           (click)="navigate(exp.label)">
         <div class="cat-icon">
           <i [class]="exp.icon"></i>
         </div>

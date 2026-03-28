@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { LoaderComponent } from './components/loader/loader.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { StickyBarComponent } from './components/sticky-bar/sticky-bar.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { DestinationsComponent } from './components/destinations/destinations.component';
-import { PackagesComponent } from './components/packages/packages.component';
 import { DealsComponent } from './components/deals/deals.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { ScrollStoryComponent } from './components/scroll-story/scroll-story.component';
@@ -20,31 +20,18 @@ import { NewsletterComponent } from './components/newsletter/newsletter.componen
 import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ScrollService } from './core/services/scroll.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
-    LoaderComponent,
-    TopbarComponent,
-    NavbarComponent,
-    StickyBarComponent,
-    HeroComponent,
-    DestinationsComponent,
-    PackagesComponent,
-    DealsComponent,
-    CategoriesComponent,
-    ScrollStoryComponent,
-    MapSectionComponent,
-    TimelineComponent,
-    GalleryComponent,
-    TestimonialsComponent,
-    BookingComponent,
-    AboutComponent,
-    NewsletterComponent,
-    ContactComponent,
-    FooterComponent
+    CommonModule, RouterOutlet,
+    LoaderComponent, TopbarComponent, NavbarComponent, StickyBarComponent,
+    HeroComponent, DestinationsComponent, DealsComponent, CategoriesComponent,
+    ScrollStoryComponent, MapSectionComponent, TimelineComponent, GalleryComponent,
+    TestimonialsComponent, BookingComponent, AboutComponent, NewsletterComponent,
+    ContactComponent, FooterComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -52,12 +39,16 @@ import { ScrollService } from './core/services/scroll.service';
 export class AppComponent implements OnInit {
   loading = true;
   selectedPackage = '';
-  activeDestTab = '';
+  isHomePage = true;
 
-  constructor(private scrollSvc: ScrollService) {}
+  constructor(private scrollSvc: ScrollService, private router: Router) {}
 
   ngOnInit() {
     setTimeout(() => this.loading = false, 3300);
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: any) => {
+      this.isHomePage = e.url === '/' || e.url === '';
+      window.scrollTo(0, 0);
+    });
   }
 
   scrollTop(e: Event) {
@@ -65,17 +56,10 @@ export class AppComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  scrollTo(id: string) {
-    this.scrollSvc.scrollTo(id);
-  }
+  scrollTo(id: string) { this.scrollSvc.scrollTo(id); }
 
   onBookPackage(pkgName: string) {
     this.selectedPackage = pkgName;
     setTimeout(() => this.scrollSvc.scrollTo('booking'), 50);
-  }
-
-  onOpenDestTab(destName: string) {
-    this.activeDestTab = destName;
-    setTimeout(() => this.scrollSvc.scrollTo('packages'), 50);
   }
 }

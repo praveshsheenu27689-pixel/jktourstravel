@@ -2,7 +2,7 @@
   <div class="container nav-container">
 
     <!-- Logo -->
-    <a class="nav-logo" (click)="scrollTo('home')" style="cursor:pointer">
+    <a class="nav-logo" (click)="goHome()" style="cursor:pointer">
       <img src="https://cdn.yourholiday.me/static/dynimg/partner/37/300x150/3562268-3562267_j-k-new-logo.jpg"
            alt="J K Tours And Travels, Pune" class="logo-img"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
@@ -19,7 +19,7 @@
         <div class="mega-menu mega-menu--dest" *ngIf="activeMenu==='domestic'" (mouseenter)="openMega('domestic')" (mouseleave)="closeMega()">
           <div class="mega-menu-header"><i class="fas fa-flag"></i> Within India</div>
           <div class="mega-grid mega-grid--dest">
-            <a class="mega-item" *ngFor="let d of domesticDestinations" (click)="scrollTo('destinations'); closeMega()">
+            <a class="mega-item" *ngFor="let d of domesticDestinations" (click)="navigateDomestic(d.name); closeMega()">
               <div class="mega-img"><img [src]="d.image" [alt]="d.name" loading="lazy"></div>
               <span>{{ d.name }}</span>
             </a>
@@ -33,7 +33,7 @@
         <div class="mega-menu mega-menu--dest" *ngIf="activeMenu==='international'" (mouseenter)="openMega('international')" (mouseleave)="closeMega()">
           <div class="mega-menu-header"><i class="fas fa-globe"></i> Outside India</div>
           <div class="mega-grid mega-grid--dest">
-            <a class="mega-item" *ngFor="let d of internationalDestinations" (click)="scrollTo('packages'); closeMega()">
+            <a class="mega-item" *ngFor="let d of internationalDestinations" (click)="navigateInternational(d.name); closeMega()">
               <div class="mega-img"><img [src]="d.image" [alt]="d.name" loading="lazy"></div>
               <span>{{ d.name }}</span>
             </a>
@@ -46,7 +46,7 @@
         </a>
         <div class="mega-menu" *ngIf="activeMenu==='experiences'">
           <div class="mega-grid">
-            <a class="mega-item" *ngFor="let item of data.megaExperiences" (click)="scrollTo('categories'); closeMega()">
+            <a class="mega-item" *ngFor="let item of data.megaExperiences" (click)="navigateExperience(item.label); closeMega()">
               <div class="mega-img">
                 <img [src]="item.image" [alt]="item.label" loading="lazy">
               </div>
@@ -56,17 +56,17 @@
         </div>
       </li>
       <li class="nav-item" (mouseenter)="closeMega()">
-        <a class="nav-link" [class.active]="activeSection==='about'" (click)="scrollTo('about')">
+        <a class="nav-link" [class.active]="activeSection==='about'" (click)="navigateToSection('about')">
           About Us
         </a>
       </li>
       <li class="nav-item" (mouseenter)="closeMega()">
-        <a class="nav-link" [class.active]="activeSection==='timeline'" (click)="scrollTo('timeline')">
+        <a class="nav-link" [class.active]="activeSection==='timeline'" (click)="navigateToSection('timeline')">
           Services
         </a>
       </li>
       <li class="nav-item" (mouseenter)="closeMega()">
-        <a class="nav-link" [class.active]="activeSection==='contact'" (click)="scrollTo('contact')">
+        <a class="nav-link" [class.active]="activeSection==='contact'" (click)="navigateToSection('contact')">
           Contact Us
         </a>
       </li>
@@ -116,7 +116,7 @@
 
       <div class="nav-divider"></div>
 
-      <a class="btn btn-accent btn-sm" (click)="scrollTo('booking')" style="cursor:pointer">
+      <a class="btn btn-accent btn-sm" (click)="navigateToSection('booking')" style="cursor:pointer">
         Book Now
       </a>
 
@@ -129,14 +129,14 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" [class.open]="mobileOpen">
     <ul>
-      <li class="mobile-nav-item"><a (click)="scrollTo('destinations')"><i class="fas fa-flag"></i> Domestic</a></li>
-      <li class="mobile-nav-item"><a (click)="scrollTo('packages')"><i class="fas fa-globe"></i> International</a></li>
-      <li class="mobile-nav-item"><a (click)="scrollTo('categories')"><i class="fas fa-briefcase"></i> Business Tour</a></li>
-      <li class="mobile-nav-item"><a (click)="scrollTo('about')"><i class="fas fa-info-circle"></i> About Us</a></li>
-      <li class="mobile-nav-item"><a (click)="scrollTo('timeline')"><i class="fas fa-concierge-bell"></i> Services</a></li>
-      <li class="mobile-nav-item"><a (click)="scrollTo('contact')"><i class="fas fa-envelope"></i> Contact Us</a></li>
+      <li class="mobile-nav-item"><a (click)="navigateToSection('destinations')"><i class="fas fa-flag"></i> Domestic</a></li>
+      <li class="mobile-nav-item"><a (click)="navigateToSection('packages')"><i class="fas fa-globe"></i> International</a></li>
+      <li class="mobile-nav-item"><a (click)="navigateToSection('categories')"><i class="fas fa-briefcase"></i> Business Tour</a></li>
+      <li class="mobile-nav-item"><a (click)="navigateToSection('about')"><i class="fas fa-info-circle"></i> About Us</a></li>
+      <li class="mobile-nav-item"><a (click)="navigateToSection('timeline')"><i class="fas fa-concierge-bell"></i> Services</a></li>
+      <li class="mobile-nav-item"><a (click)="navigateToSection('contact')"><i class="fas fa-envelope"></i> Contact Us</a></li>
       <li class="mobile-nav-item mobile-cta">
-        <a class="btn btn-accent" (click)="scrollTo('booking')"><i class="fas fa-calendar-check"></i> Book Now</a>
+        <a class="btn btn-accent" (click)="navigateToSection('booking')"><i class="fas fa-calendar-check"></i> Book Now</a>
       </li>
     </ul>
   </div>

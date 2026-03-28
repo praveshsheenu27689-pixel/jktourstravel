@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
 import { ScrollService } from '../../core/services/scroll.service';
 import gsap from 'gsap';
@@ -15,7 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements AfterViewInit {
-  constructor(public data: DataService, private scrollSvc: ScrollService) {}
+  constructor(public data: DataService, private scrollSvc: ScrollService, private router: Router) {}
 
   ngAfterViewInit() {
     gsap.fromTo('.cat-card',
@@ -25,5 +26,8 @@ export class CategoriesComponent implements AfterViewInit {
     );
   }
 
-  goTo(id: string) { this.scrollSvc.scrollTo(id); }
+  navigate(label: string) {
+    const key = label.toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/experience', key]);
+  }
 }

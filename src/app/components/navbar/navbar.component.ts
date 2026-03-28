@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from '../../core/services/data.service';
 import { ScrollService } from '../../core/services/scroll.service';
 import { Subscription } from 'rxjs';
@@ -8,10 +9,12 @@ import gsap from 'gsap';
 
 interface SearchResult { name: string; type: string; image: string; section: string; }
 
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
@@ -53,7 +56,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   popularTags = ['Dubai', 'Bali', 'Europe', 'Thailand', 'Andaman', 'Kerala', 'Singapore', 'Maldives'];
 
-  constructor(public data: DataService, private scrollSvc: ScrollService) {}
+  constructor(public data: DataService, private scrollSvc: ScrollService, private router: Router) {}
 
   ngOnInit() {
     this.scrollSvc.init();
@@ -104,9 +107,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     const results: SearchResult[] = [];
 
-    this.data.destinations.forEach(d => {
+    // Domestic destinations
+    this.domesticDestinations.forEach(d => {
       if (d.name.toLowerCase().includes(q)) {
-        results.push({ name: d.name, type: 'Destination', image: d.image, section: 'destinations' });
+        results.push({ name: d.name, type: 'Domestic Destination', image: d.image, section: 'domestic:' + d.name });
+      }
+    });
+
+    // International destinations
+    this.internationalDestinations.forEach(d => {
+      if (d.name.toLowerCase().includes(q)) {
+        results.push({ name: d.name, type: 'International Destination', image: d.image, section: 'international:' + d.name });
+      }
+    });
+
+    // All destinations fallback
+    this.data.destinations.forEach(d => {
+      if (d.name.toLowerCase().includes(q) && !results.find(r => r.name === d.name)) {
+        results.push({ name: d.name, type: 'Destination', image: d.image, section: 'dest:' + d.name });
       }
     });
 
@@ -118,7 +136,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     ];
     allPkgs.forEach(p => {
       if (p.title.toLowerCase().includes(q) || p.itinerary.toLowerCase().includes(q)) {
-        results.push({ name: p.title, type: p.category + ' Package', image: p.image, section: 'packages' });
+        results.push({ name: p.title, type: p.category + ' Package', image: p.image, section: 'home:packages' });
       }
     });
 
@@ -129,16 +147,59 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.searchResults.length > 0) {
       this.selectResult(this.searchResults[0]);
     } else {
-      this.scrollSvc.scrollTo('destinations');
+      this.navigateToSection('destinations');
       this.searchOpen = false;
     }
   }
 
   selectResult(r: SearchResult) {
-    this.scrollSvc.scrollTo(r.section);
     this.searchOpen = false;
     this.searchQuery = '';
     this.searchResults = [];
+
+    if (r.section.startsWith('domestic:')) {
+      const name = r.section.replace('domestic:', '');
+      this.navigateDomestic(name);
+    } else if (r.section.startsWith('international:')) {
+      const name = r.section.replace('international:', '');
+      this.navigateInternational(name);
+    } else if (r.section.startsWith('dest:')) {
+      const name = r.section.replace('dest:', '');
+      const key = name.toLowerCase().replace(/\s+/g, '-');
+      this.router.navigate(['/destination', key]);
+    } else if (r.section.startsWith('home:')) {
+      const sectionId = r.section.replace('home:', '');
+      this.navigateToSection(sectionId);
+    } else {
+      this.navigateToSection(r.section);
+    }
+  }
+
+  navigateDomestic(name: string) {
+    const key = name.toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/destination', key]);
+    this.mobileOpen = false;
+    this.activeMenu = null;
+  }
+
+  navigateInternational(name: string) {
+    const key = name.toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/destination', key]);
+    this.mobileOpen = false;
+    this.activeMenu = null;
+  }
+
+  navigateExperience(label: string) {
+    const key = label.toLowerCase().replace(/\s+/g, '-');
+    this.router.navigate(['/experience', key]);
+    this.mobileOpen = false;
+    this.activeMenu = null;
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
+    this.mobileOpen = false;
+    this.activeMenu = null;
   }
 
   quickSearch(tag: string) {
@@ -163,10 +224,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   closeMega() { this.activeMenu = null; }
 
-  scrollTo(id: string) {
-    this.scrollSvc.scrollTo(id);
+  // Navigate to a home page section from anywhere
+  navigateToSection(id: string) {
     this.mobileOpen = false;
     this.searchOpen = false;
     this.activeMenu = null;
+    const isHome = this.router.url === '/' || this.router.url === '';
+    if (isHome) {
+      this.scrollSvc.scrollTo(id);
+    } else {
+      this.router.navigate(['/']).then(() => {
+        setTimeout(() => this.scrollSvc.scrollTo(id), 400);
+      });
+    }
+  }
+
+  scrollTo(id: string) {
+    this.navigateToSection(id);
   }
 }
